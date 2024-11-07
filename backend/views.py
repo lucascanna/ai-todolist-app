@@ -6,64 +6,63 @@ from backend.serializers import TaskSerializer, UserSerializer
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
 
 # Create your views here.
 def index(request):
     return HttpResponse("Hello, world. You're at the backend index")
 
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def task_list(request):
     if request.method == 'GET':
         tasks = Task.objects.all()
         task = TaskSerializer(tasks, many=True)
-        return JsonResponse(task.data, safe=False)
+        return Response(task.data)
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        task_serializer = TaskSerializer(data=data)
+        task_serializer = TaskSerializer(data=request.data)
         if task_serializer.is_valid():
             task_serializer.save()
-            return JsonResponse(task_serializer.data, status=201)
-        return JsonResponse(task_serializer.errors, status=400)
+            return Response(task_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-@csrf_exempt
+@api_view(['GET', 'DELETE', 'PUT', 'PATCH'])
 def task_detail(request, task_id):
     try:
         task = Task.objects.get(pk=task_id)
     except Task.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == 'GET':
         task_serializer = TaskSerializer(task)
-        return JsonResponse(task_serializer.data)
+        return Response(task_serializer.data)
     elif request.method == 'DELETE':
         task.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        task_serializer = TaskSerializer(task, data=data)
+        task_serializer = TaskSerializer(task, data=request.data)
         if task_serializer.is_valid():
             task_serializer.save()
-            return JsonResponse(task_serializer.data, status=201)
-        return JsonResponse(task_serializer.errors, status=400)
+            return Response(task_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'PATCH':
-        data = JSONParser().parse(request)
-        task_serializer = TaskSerializer(task, data=data, partial=True)
+        task_serializer = TaskSerializer(task, data=request.data, partial=True)
         if task_serializer.is_valid():
             task_serializer.save()
-            return JsonResponse(task_serializer.data, status=201)
-        return JsonResponse(task_serializer.errors, status=400)
+            return Response(task_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def user_list(request):
     if request.method == 'GET':
         users = User.objects.all()
         user = UserSerializer(users, many=True)
-        return JsonResponse(user.data, safe=False)
+        return Response(user.data)
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        user = UserSerializer(data=data)
-        if user.is_valid():
-            user.save()
-            return JsonResponse(user.data, status=201)
-        return JsonResponse(user.errors, status=400)
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
