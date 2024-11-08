@@ -1,20 +1,21 @@
-from django.http import HttpResponse
-
 from backend.models import Task
 from django.contrib.auth.models import User
 from backend.serializers import TaskSerializer, UserSerializer
-from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import permissions
+from rest_framework.reverse import reverse
 from backend.permissions import IsOwner
 
 # Create your views here.
 class Index(APIView):
     def get(self, request):
-        return HttpResponse("Hello, world. You're at the backend index")
+        return Response({
+            "tasks": reverse('task_list', request=request),
+            "users": reverse('user_list', request=request),
+        })
 
 class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
