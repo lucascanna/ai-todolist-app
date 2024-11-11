@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=ai_todo_list_app
+POSTGRES_USER=rhyKzCQilHrEOkdFmcutHwonKnpyqIID
+POSTGRES_PASSWORD=V03yu9UrNc55foOzHzv40wkk72sTwCdZJWqx1eaGfCHUarNLvYbdCeLYzEudzNZL

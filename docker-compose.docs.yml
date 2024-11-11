@@ -1,0 +1,16 @@
+services:
+  docs:
+    image: ai_todo_list_app_local_docs
+    container_name: ai_todo_list_app_local_docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./ai_todo_list_app:/app/ai_todo_list_app:z
+    ports:
+      - '9000:9000'
+    command: /start-docs
