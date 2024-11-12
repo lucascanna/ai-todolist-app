@@ -277,4 +277,3 @@ ai_todo_list_app/media/
 .ipython/
 .env
 .envs/*
-!.envs/.local/
