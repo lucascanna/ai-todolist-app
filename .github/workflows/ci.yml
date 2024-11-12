@@ -56,6 +56,9 @@ jobs:
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> ./.envs/.local/.postgres
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> ./.envs/.local/.postgres
 
+          cat ./.envs/.local/.django
+          cat ./.envs/.local/.postgres
+
       - name: Build the Stack
         run: docker compose -f docker-compose.local.yml build django
 
