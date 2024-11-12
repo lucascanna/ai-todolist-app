@@ -45,11 +45,13 @@ jobs:
 
       - name: Create .env files
         run: |
+          mkdir -p ./.envs/.local && touch ./.envs/.local/.django
           echo PREM_API_KEY=${{ secrets.PREM_API_KEY }} >> ./.envs/.local/.django
           echo PREM_PROJECT_ID=${{ secrets.PREM_PROJECT_ID }} >> ./.envs/.local/.django
           echo USE_DOCKER=yes >> ./.envs/.local/.django
           echo IPYTHONDIR=/app/.ipython >> ./.envs/.local/.django
 
+          mkdir -p ./.envs/.local && touch ./.envs/.local/.postgres
           echo POSTGRES_HOST=postgres >> ./.envs/.local/.postgres
           echo POSTGRES_PORT=5432 >> ./.envs/.local/.postgres
           echo POSTGRES_DB=ai_todo_list_app >> ./.envs/.local/.postgres
