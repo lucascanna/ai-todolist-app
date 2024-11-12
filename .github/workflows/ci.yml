@@ -4,6 +4,8 @@ name: CI
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  PREM_API_KEY: ${{ secrets.PREM_API_KEY }}
+  PREM_PROJECT_ID: ${{ secrets.PREM_PROJECT_ID }}
 
 on:
   pull_request:
