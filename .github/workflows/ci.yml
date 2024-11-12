@@ -43,6 +43,19 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
+      - name: Create .env files
+        run: |
+          echo PREM_API_KEY=${{ secrets.PREM_API_KEY }} >> ./.envs/.local/.django
+          echo PREM_PROJECT_ID=${{ secrets.PREM_PROJECT_ID }} >> ./.envs/.local/.django
+          echo USE_DOCKER=yes >> ./.envs/.local/.django
+          echo IPYTHONDIR=/app/.ipython >> ./.envs/.local/.django
+
+          echo POSTGRES_HOST=postgres >> ./.envs/.local/.django
+          echo POSTGRES_PORT=5432 >> ./.envs/.local/.django
+          echo POSTGRES_DB=ai_todo_list_app >> ./.envs/.local/.django
+          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> ./.envs/.local/.django
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> ./.envs/.local/.django
+
       - name: Build the Stack
         run: docker compose -f docker-compose.local.yml build django
 
